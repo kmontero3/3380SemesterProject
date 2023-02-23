@@ -4,7 +4,7 @@ public class ChoreTrackerDB {
     private Connection conn;
     
     public ChoreTrackerDB(String url, String user, String password) throws SQLException {
-        conn = DriverManager.getConnection("127.0.0.1", "root", "PhiOrDie!2251");
+        conn = DriverManager.getConnection("127.0.0.1", "root", "");
     }
     public Child getChild(int id) throws SQLException {
         String query = "SELECT name, coins_available FROM child WHERE id = ?";

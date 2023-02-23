@@ -22,4 +22,18 @@ public class Reward {
     public void setCoinAmount(int coinAmount) {
         this.coinAmount = coinAmount;
     }
-}
+
+    // public Reward[] getRewardList() {
+   
+    // }
+
+    // public void addReward() {
+     
+    // }
+    // public void removeReward() {
+
+    // }
+
+    // public updateReward() {
+
+    // }
