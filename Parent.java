@@ -6,7 +6,7 @@ public class Parent {
     public Parent(int id, String name, String password) {
         this.id = id;
         this.name = name;
-        this.coinsAvailable = password;
+        this.password = password;
     }
 
     public int getId() {

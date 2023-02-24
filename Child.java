@@ -5,6 +5,7 @@ public class Child {
     private Parent parent;
 
     public Child(int id, String name, int coinsAvailable, Parent parent) {
+        this.parent = parent;
         this.id = id;
         this.name = name;
         this.coinsAvailable = coinsAvailable;
