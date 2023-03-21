@@ -14,7 +14,7 @@ public class ChoreTrackerDB {
         if (rs.next()) {
             String name = rs.getString("name");
             int coinsAvailable = rs.getInt("coins_available");
-            return new Child(id, name, coinsAvailable);
+            return new Child(id, name, coinsAvailable, null);
         } else {
             return null;
         }

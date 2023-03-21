@@ -7,22 +7,22 @@ import java.util.Random;
 //chore reward amount and whenever a reward is bought, the child's coins will decrease by the amount of 
 //the coin reward. This implementation is not possible without being connected to the database.
 public class Main {
-    // // Connection parameters for MySQL database
-    // private static final String URL = "jdbc:mysql://localhost:3306/because";
-    // private static final String USER = "root";
-    // private static final String PASSWORD = "";
+    // Connection parameters for MySQL database
+    private static final String URL = "jdbc:mysql://localhost:3306/because";
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         //theUI.showmainpage();
-        // Connection connection = null;
-        // Statement statement = null;
+        Connection connection = null;
+        Statement statement = null;
 
-        // try {
-        // }
+        
+        
             // Establish connection to database
-            // connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            // statement = connection.createStatement();
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            statement = connection.createStatement();
 
             // Upload example names
             
@@ -33,7 +33,7 @@ public class Main {
                 // statement.executeUpdate(sql);
                 Parent parent = new Parent(i, parentNames[i],"abcd");
                 Child child = new Child(i, childNames[i], 0, parent);
-                System.out.println(child.getId() + " " + child.getName() + " " + child.getCoinsAvailable());
+                System.out.println(child.getId() + " " + child.getName() + " " + child.getCoinsAvailable() + " " + child.getParent().getName());
             }
     
             // Upload example chores
@@ -67,6 +67,6 @@ public class Main {
         //     } catch (SQLException e) {
         //         e.printStackTrace();
         //     }
-        }
+        
     }
-
+}
