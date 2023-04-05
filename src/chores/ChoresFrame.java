@@ -1,9 +1,7 @@
 package chores;
 
-import java.io.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 class ChoresFrame extends JFrame {
     public ChoresFrame() {
@@ -15,9 +13,23 @@ class ChoresFrame extends JFrame {
         label.setFont(playfulFont);
 
         String[] choresData = {"Chore 1", "Chore 2", "Chore 3", "Chore 4"}; // Replace with actual chores data
-        JList<String> choresList = new JList<>(choresData);
-        choresList.setFont(playfulFont);
-        JScrollPane scrollPane = new JScrollPane(choresList);
+
+        // Create a panel with BoxLayout for checkboxes
+        JPanel choresPanel = new JPanel();
+        choresPanel.setLayout(new BoxLayout(choresPanel, BoxLayout.Y_AXIS));
+        choresPanel.setBackground(new Color(255, 255, 153));
+
+        // Create a JCheckBox for each chore and add it to the panel
+        Font checkBoxFont = new Font("Comic Sans MS", Font.PLAIN, 24);
+        for (String chore : choresData) {
+            JCheckBox checkBox = new JCheckBox(chore);
+            checkBox.setFont(checkBoxFont);
+            checkBox.setBackground(new Color(255, 255, 153));
+            choresPanel.add(checkBox);
+        }
+
+        // Wrap the chores panel in a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(choresPanel);
         scrollPane.setPreferredSize(new Dimension(500, 400));
 
         // Layout components
