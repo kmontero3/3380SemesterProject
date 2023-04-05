@@ -3,6 +3,11 @@ package chores;
 import java.io.*;
 import javax.swing.*;
 import java.awt.*;
+package chores;
+
+import java.io.*;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class LoginFrame extends JFrame {
@@ -87,5 +92,3 @@ public class LoginFrame extends JFrame {
         new LoginFrame();
     }
 }
-
-
