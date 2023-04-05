@@ -1,0 +1,60 @@
+package chores;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class ParentSettingsFrame extends JFrame {
+    private String[] settingsOptions = {"Setting 1", "Setting 2", "Setting 3"}; // Replace with actual setting options
+
+    public ParentSettingsFrame() {
+        super("Parent Settings");
+
+        // Create components
+        JLabel titleLabel = new JLabel("Parent Settings");
+        titleLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+
+        JPanel settingsPanel = new JPanel(new GridLayout(settingsOptions.length, 1, 0, 10));
+        settingsPanel.setBackground(new Color(255, 255, 153));
+        for (String settingsOption : settingsOptions) {
+            JButton settingsButton = new JButton(settingsOption);
+            settingsButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+            settingsButton.setBackground(new Color(255, 255, 102));
+            settingsButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Add your code to handle setting selection here
+                    System.out.println("Selected setting: " + settingsOption);
+                }
+            });
+            settingsPanel.add(settingsButton);
+        }
+
+        // Layout components
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+        panel.setBackground(new Color(255, 255, 153));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(10, 10, 10, 10);
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.CENTER;
+        panel.add(titleLabel, constraints);
+
+        constraints.gridy = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(settingsPanel, constraints);
+
+        // Add panel to frame
+        add(panel);
+
+        // Set frame properties
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(400, 300);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+}
