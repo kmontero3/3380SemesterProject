@@ -6,7 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 class MainFrame extends JFrame {
-	private String selectedAccount;
+    private String selectedAccount;
+
     public MainFrame(String selectedAccount) {
         super("Main Menu");
         this.selectedAccount = selectedAccount;
@@ -21,17 +22,14 @@ class MainFrame extends JFrame {
         coinsButton.setFont(playfulFont);
         coinsButton.setBackground(new Color(255, 153, 102));
         coinsButton.setForeground(Color.WHITE);
-        coinsButton.setPreferredSize(new Dimension(500, 1000));
 
         choresButton.setFont(playfulFont);
         choresButton.setBackground(new Color(153, 255, 153));
         choresButton.setForeground(Color.WHITE);
-        choresButton.setPreferredSize(new Dimension(500, 1000));
 
         shopButton.setFont(playfulFont);
         shopButton.setBackground(new Color(153, 153, 255));
         shopButton.setForeground(Color.WHITE);
-        shopButton.setPreferredSize(new Dimension(500, 1000));
 
         // Layout components
         JPanel panel = new JPanel();
@@ -40,6 +38,9 @@ class MainFrame extends JFrame {
         GridBagConstraints constraints = new GridBagConstraints();
 
         constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.weighty = 1;
+        constraints.weightx = 1;
+        constraints.fill = GridBagConstraints.BOTH;
 
         constraints.gridx = 0;
         constraints.gridy = 0;
