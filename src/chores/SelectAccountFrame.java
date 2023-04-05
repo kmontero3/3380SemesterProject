@@ -1,4 +1,5 @@
 package chores;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -33,6 +34,19 @@ public class SelectAccountFrame extends JFrame {
             accountPanel.add(accountButton);
         }
 
+        // Create Parent Settings button
+        JButton parentSettingsButton = new JButton("Parent Settings");
+        parentSettingsButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        parentSettingsButton.setBackground(new Color(200, 200, 200));
+        parentSettingsButton.setForeground(Color.BLACK);
+        parentSettingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Open ParentSettingsFrame
+                ParentSettingsFrame parentSettingsFrame = new ParentSettingsFrame();
+            }
+        });
+
         // Layout components
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -47,7 +61,22 @@ public class SelectAccountFrame extends JFrame {
         constraints.anchor = GridBagConstraints.CENTER;
         panel.add(titleLabel, constraints);
 
+        constraints.gridx = 1;
+        constraints.weightx = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        JPanel emptyPanel = new JPanel();
+        emptyPanel.setOpaque(false);
+        panel.add(emptyPanel, constraints);
+
+        constraints.gridx = 2;
+        constraints.weightx = 0;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.NORTHEAST;
+        panel.add(parentSettingsButton, constraints);
+
+        constraints.gridx = 0;
         constraints.gridy = 1;
+        constraints.gridwidth = 3;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         panel.add(accountPanel, constraints);
 
