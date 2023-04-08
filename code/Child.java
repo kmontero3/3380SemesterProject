@@ -13,6 +13,7 @@ public class Child {
     private Parent parent;
     private ArrayList<Reward> rewards;
     private ArrayList<Chore> chores;
+    private ArrayList<Achievement> achievements;
 
     private int totalChoresAssigned = 0;
     private int totalChoresCompleted = 0;
@@ -29,6 +30,7 @@ public class Child {
         this.coinsAvailable = coinsAvailable;
         this.rewards = rewards;
         this.chores = arrayList;
+        this.achievements = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -83,6 +85,23 @@ public class Child {
         coinsAvailable = newCoins;
     }
 
+    public ArrayList<Achievement> getAchievements() {
+        return achievements;
+    }
+
+    public void addAchievement(Achievement achievement) {
+        achievements.add(achievement);
+    }
+
+    public boolean hasAchievement(Achievement achievement) {
+        return achievements.contains(achievement);
+    }
+
+    public void completeAchievement(Achievement achievement) {
+        if (hasAchievement(achievement)) {
+            achievement.setCompleted(true);
+        }
+    }
     public void completedChore(Child child, Chore chore) {
         int updatedCoins = chore.getRewardAmount() + child.coinsAvailable;
         updateCoins(updatedCoins);
