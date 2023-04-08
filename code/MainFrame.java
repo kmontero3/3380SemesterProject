@@ -27,6 +27,7 @@ class MainFrame extends JFrame {
         JButton backButton = new JButton("Back");
         JButton leaderboardButton = new JButton("Show Leaderboard");
         JButton rewardsButton = new JButton("Rewards");
+        JButton achievementsButton = new JButton("Achievements");
 
         // Customize components
         Font playfulFont = new Font("Comic Sans MS", Font.BOLD, 40);
@@ -70,6 +71,14 @@ class MainFrame extends JFrame {
         rewardsButton.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(Color.BLACK, 2),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        
+        achievementsButton.setFont(playfulFont);
+        achievementsButton.setBackground(new Color(255, 204, 102));
+        achievementsButton.setForeground(Color.WHITE);
+        achievementsButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 2),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        
         rewardsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,7 +117,15 @@ class MainFrame extends JFrame {
         backButtonConstraints.gridwidth = 4;
         backButtonConstraints.anchor = GridBagConstraints.CENTER;
         panel.add(backButton, backButtonConstraints);
-
+        
+        GridBagConstraints achievementsButtonConstraints = new GridBagConstraints();
+        achievementsButtonConstraints.gridx = 4;
+        achievementsButtonConstraints.gridy = 0;
+        achievementsButtonConstraints.weighty = 1;
+        achievementsButtonConstraints.weightx = 1;
+        achievementsButtonConstraints.fill = GridBagConstraints.BOTH;
+        
+        panel.add(achievementsButton, achievementsButtonConstraints);
         panel.add(leaderboardButton);
 
         backButton.addActionListener(new ActionListener() {
@@ -138,6 +155,13 @@ class MainFrame extends JFrame {
             }
         });
 
+        achievementsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new AchievementsFrame(child);
+            }
+        });
         // Add panel to frame
         add(panel);
 
@@ -284,6 +308,108 @@ class MainFrame extends JFrame {
             return rewardPanel;
         }
     }
+    class AchievementsFrame extends JFrame {
+        private Child child;
+        private JPanel achievementsListPanel;
 
+        public AchievementsFrame(Child child) {
+            super("Achievements");
+            this.child = child;
+
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.setBackground(new Color(255, 255, 153));
+
+            achievementsListPanel = new JPanel();
+            achievementsListPanel.setLayout(new BoxLayout(achievementsListPanel, BoxLayout.Y_AXIS));
+            achievementsListPanel.setBackground(new Color(255, 255, 153));
+            achievementsListPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+            updateAchievementsList();
+
+            JScrollPane scrollPane = new JScrollPane(achievementsListPanel);
+            scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+            panel.add(scrollPane, BorderLayout.CENTER);
+
+            JButton backButton = new JButton("Back");
+            backButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+            backButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new MainFrame(child);
+                }
+            });
+
+            panel.add(backButton, BorderLayout.SOUTH);
+            add(panel);
+
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setSize(Toolkit.getDefaultToolkit().getScreenSize());
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            setLocationRelativeTo(null);
+            setVisible(true);
+        }
+
+        private void updateAchievementsList() {
+            achievementsListPanel.removeAll();
+
+            ArrayList<Achievement> achievements = child.getAchievements();
+
+            if (achievements.size() > 0) {
+                for (Achievement achievement : achievements) {
+                    JPanel achievementPanel = createAchievementPanel(achievement);
+                    achievementsListPanel.add(achievementPanel);
+                    achievementsListPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+                }
+            } else {
+                JLabel noAchievementsLabel = new JLabel("You have no achievements.");
+                noAchievementsLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+                achievementsListPanel.add(noAchievementsLabel);
+            }
+
+            achievementsListPanel.revalidate();
+            achievementsListPanel.repaint();
+        }
+
+        private JPanel createAchievementPanel(Achievement achievement) {
+            JPanel achievementPanel = new JPanel();
+            achievementPanel.setLayout(new BoxLayout(achievementPanel, BoxLayout.X_AXIS));
+            achievementPanel.setBackground(new Color(255, 255, 153));
+            achievementPanel.setBorder(BorderFactory.createCompoundBorder(            BorderFactory.createLineBorder(Color.BLACK, 1),
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+
+            JLabel achievementLabel = new JLabel(achievement.getName() + " - " + achievement.getDescription());
+            achievementLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+
+            JButton claimButton = new JButton("Claim");
+            claimButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+            claimButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (achievement.isCompleted()) {
+                        int confirm = JOptionPane.showConfirmDialog(AchievementsFrame.this, "Are you sure you want to claim " + achievement.getName() + "?", "Confirm Claim", JOptionPane.YES_NO_OPTION);
+
+                        if (confirm == JOptionPane.YES_OPTION) {
+                            child.completeAchievement(achievement);
+                            JOptionPane.showMessageDialog(AchievementsFrame.this, "You have claimed " + achievement.getName() + "!", "Achievement Claimed", JOptionPane.INFORMATION_MESSAGE);
+                            updateAchievementsList();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(AchievementsFrame.this, "You haven't completed " + achievement.getName() + " yet!", "Achievement Not Completed", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+
+            if (!achievement.isCompleted()) {
+                claimButton.setEnabled(false);
+            }
+
+            achievementPanel.add(achievementLabel);
+            achievementPanel.add(Box.createHorizontalGlue());
+            achievementPanel.add(claimButton);
+
+            return achievementPanel;
+        }
+    }
 }
 
