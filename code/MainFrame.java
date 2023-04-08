@@ -324,7 +324,7 @@ class MainFrame extends JFrame {
             achievementsListPanel.setBackground(new Color(255, 255, 153));
             achievementsListPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-            updateAchievementsList();
+            updateAchievementsList(this.child);
 
             JScrollPane scrollPane = new JScrollPane(achievementsListPanel);
             scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -350,14 +350,18 @@ class MainFrame extends JFrame {
             setVisible(true);
         }
 
-        private void updateAchievementsList() {
+        private void updateAchievementsList(Child child) {
             achievementsListPanel.removeAll();
 
             ArrayList<Achievement> achievements = child.getAchievements();
 
             if (achievements.size() > 0) {
                 for (Achievement achievement : achievements) {
-                    JPanel achievementPanel = createAchievementPanel(achievement);
+                	if(child.getTotalChoresCompleted() >= achievement.getRequiredChores())
+                	{
+                		child.completeAchievement(achievement);
+                	}
+                    JPanel achievementPanel = createAchievementPanel(achievement, child);
                     achievementsListPanel.add(achievementPanel);
                     achievementsListPanel.add(Box.createRigidArea(new Dimension(0, 10)));
                 }
@@ -371,15 +375,23 @@ class MainFrame extends JFrame {
             achievementsListPanel.repaint();
         }
 
-        private JPanel createAchievementPanel(Achievement achievement) {
+        private JPanel createAchievementPanel(Achievement achievement, Child child) {
             JPanel achievementPanel = new JPanel();
-            achievementPanel.setLayout(new BoxLayout(achievementPanel, BoxLayout.X_AXIS));
+            achievementPanel.setLayout(new BoxLayout(achievementPanel, BoxLayout.Y_AXIS));
             achievementPanel.setBackground(new Color(255, 255, 153));
-            achievementPanel.setBorder(BorderFactory.createCompoundBorder(            BorderFactory.createLineBorder(Color.BLACK, 1),
+            achievementPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK, 1),
                     BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
             JLabel achievementLabel = new JLabel(achievement.getName() + " - " + achievement.getDescription());
             achievementLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+            
+            // Create the progress bar
+            int progress = (int) (((double) child.getTotalChoresCompleted() / achievement.getRequiredChores()) * 100);
+            JProgressBar progressBar = new JProgressBar(0, 100);
+            progressBar.setValue(progress);
+            progressBar.setStringPainted(true);
+            progressBar.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+            progressBar.setString(child.getTotalChoresCompleted() + "/" + achievement.getRequiredChores() + " chores");
 
             JButton claimButton = new JButton("Claim");
             claimButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
@@ -390,9 +402,9 @@ class MainFrame extends JFrame {
                         int confirm = JOptionPane.showConfirmDialog(AchievementsFrame.this, "Are you sure you want to claim " + achievement.getName() + "?", "Confirm Claim", JOptionPane.YES_NO_OPTION);
 
                         if (confirm == JOptionPane.YES_OPTION) {
-                            child.completeAchievement(achievement);
+                            child.removeAchievement(achievement);
                             JOptionPane.showMessageDialog(AchievementsFrame.this, "You have claimed " + achievement.getName() + "!", "Achievement Claimed", JOptionPane.INFORMATION_MESSAGE);
-                            updateAchievementsList();
+                            updateAchievementsList(child);
                         }
                     } else {
                         JOptionPane.showMessageDialog(AchievementsFrame.this, "You haven't completed " + achievement.getName() + " yet!", "Achievement Not Completed", JOptionPane.WARNING_MESSAGE);
@@ -405,11 +417,12 @@ class MainFrame extends JFrame {
             }
 
             achievementPanel.add(achievementLabel);
-            achievementPanel.add(Box.createHorizontalGlue());
+            achievementPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+            achievementPanel.add(progressBar);
+            achievementPanel.add(Box.createRigidArea(new Dimension(0, 5)));
             achievementPanel.add(claimButton);
 
             return achievementPanel;
         }
     }
 }
-
