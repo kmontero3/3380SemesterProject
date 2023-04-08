@@ -31,6 +31,7 @@ public class Child {
         this.rewards = rewards;
         this.chores = arrayList;
         this.achievements = new ArrayList<>();
+        initializeAchievements();
     }
 
     public UUID getId() {
@@ -85,6 +86,12 @@ public class Child {
         coinsAvailable = newCoins;
     }
 
+    private void initializeAchievements() {
+        achievements.add(new Achievement("Complete 5 chores", "Claim 10 extra coins", 10, 5));
+        achievements.add(new Achievement("Complete 10 chores", "Claim 20 extra coins", 20, 10));
+        achievements.add(new Achievement("Complete 20 chores", "Claim 50 extra coins", 50, 20));
+    }
+    
     public ArrayList<Achievement> getAchievements() {
         return achievements;
     }
@@ -102,11 +109,13 @@ public class Child {
             achievement.setCompleted(true);
         }
     }
+    
     public void completedChore(Child child, Chore chore) {
         int updatedCoins = chore.getRewardAmount() + child.coinsAvailable;
         updateCoins(updatedCoins);
         removeChore(chore);
     }
+    
     public void addReward(Child child, Reward reward) {
         int updatedCoins = child.coinsAvailable - reward.getCoinAmount();
         updateCoins(updatedCoins);
@@ -123,6 +132,7 @@ public class Child {
         }
         return false;
     }
+    
 
     public static void saveChildrentoCSV() {
         FileWriter fileWriter = null;
