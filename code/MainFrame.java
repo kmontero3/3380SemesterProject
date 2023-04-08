@@ -137,6 +137,12 @@ class MainFrame extends JFrame {
     
     private Timer createCoinsAnimationTimer(Child child, JLabel coinsLabel) {
         int animationDelay = 100; // Update the coins label every 100ms
+        if(child.getCoinsAvailable()>=100) {
+        	int scaled = child.getCoinsAvailable()/100;
+        	if (scaled >= 1) {
+        		animationDelay -= scaled * 100;
+        	}
+        }
         ActionListener animationListener = new ActionListener() {
             int animationStep = 0;
             int numberOfSteps = child.getCoinsAvailable();
