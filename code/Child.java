@@ -100,6 +100,11 @@ public class Child {
         achievements.add(achievement);
     }
 
+    public void removeAchievement(Achievement achievement) {
+        achievements.remove(achievement);
+        this.coinsAvailable += achievement.getExtraCoins();
+    }
+    
     public boolean hasAchievement(Achievement achievement) {
         return achievements.contains(achievement);
     }
@@ -112,6 +117,7 @@ public class Child {
     
     public void completedChore(Child child, Chore chore) {
         int updatedCoins = chore.getRewardAmount() + child.coinsAvailable;
+        child.updateTotalChoresCompleted();
         updateCoins(updatedCoins);
         removeChore(chore);
     }
