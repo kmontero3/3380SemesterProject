@@ -1,10 +1,8 @@
 package code;
 
-import java.io.*;
-import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 class MainFrame extends JFrame {
     private String selectedAccount;
@@ -17,13 +15,16 @@ class MainFrame extends JFrame {
     }
 
     public void ShowMainFrame(Child child) {
-    	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        
         // Create components
-    	Parent currentParent = child.getParent();
+        Parent currentParent = child.getParent();
         JLabel coinsLabel = new JLabel("Coins: " + child.getCoinsAvailable());
         JButton choresButton = new JButton("Chores");
         JButton shopButton = new JButton("Shop");
         JButton backButton = new JButton("Back");
+        JButton leaderboardButton = new JButton("Show Leaderboard");
+        JButton rewardsButton = new JButton("Rewards");
 
         // Customize components
         Font playfulFont = new Font("Comic Sans MS", Font.BOLD, 40);
@@ -43,28 +44,36 @@ class MainFrame extends JFrame {
         shopButton.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.BLACK, 2),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-
+        
         backButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
         backButton.setBackground(new Color(255, 153, 102));
         backButton.setForeground(Color.WHITE);
-        
-        JButton leaderboardButton = new JButton("Show Leaderboard");
+
         leaderboardButton.setFont(playfulFont);
         leaderboardButton.setBackground(new Color(248, 200, 255));
         leaderboardButton.setForeground(Color.WHITE);
-       // leaderboardButton.setPreferredSize(new Dimension(100, 300));
         leaderboardButton.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.BLACK, 2),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         leaderboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
                 new LeaderboardFrame(currentParent);  
-                
             }
         });
-
+        
+        rewardsButton.setFont(playfulFont);
+        rewardsButton.setBackground(new Color(102, 204, 255));
+        rewardsButton.setForeground(Color.WHITE);
+        rewardsButton.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.BLACK, 2),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        rewardsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "You have " + child.getRewards().size() + " rewards: " + child.getRewards().toString(), "Rewards", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
 
         // Layout components
         JPanel panel = new JPanel();
@@ -81,19 +90,22 @@ class MainFrame extends JFrame {
         constraints.gridy = 0;
         panel.add(coinsLabel, constraints);
 
-        constraints.gridx = 1;
+        constraints    .gridx = 1;
         panel.add(choresButton, constraints);
 
         constraints.gridx = 2;
         panel.add(shopButton, constraints);
 
+        constraints.gridx = 3;
+        panel.add(rewardsButton, constraints);
+
         GridBagConstraints backButtonConstraints = new GridBagConstraints();
         backButtonConstraints.gridx = 0;
         backButtonConstraints.gridy = 1;
-        backButtonConstraints.gridwidth = 3;
+        backButtonConstraints.gridwidth = 4;
         backButtonConstraints.anchor = GridBagConstraints.CENTER;
         panel.add(backButton, backButtonConstraints);
-        
+
         panel.add(leaderboardButton);
 
         backButton.addActionListener(new ActionListener() {
@@ -110,7 +122,7 @@ class MainFrame extends JFrame {
         choresButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	dispose();
+                dispose();
                 new ChoresFrame(child);
             }
         });
@@ -118,10 +130,11 @@ class MainFrame extends JFrame {
         shopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	dispose();
+                dispose();
                 new ShopFrame(child);
             }
         });
+
         // Add panel to frame
         add(panel);
 
@@ -134,14 +147,14 @@ class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
+
     private Timer createCoinsAnimationTimer(Child child, JLabel coinsLabel) {
         int animationDelay = 100; // Update the coins label every 100ms
         if(child.getCoinsAvailable()>=100) {
-        	int scaled = child.getCoinsAvailable()/100;
-        	if (scaled >= 1) {
-        		animationDelay -= scaled * 100;
-        	}
+            int scaled = child.getCoinsAvailable()/100;
+            if (scaled >= 1) {
+                animationDelay -= scaled * 100;
+            }
         }
         ActionListener animationListener = new ActionListener() {
             int animationStep = 0;
@@ -162,7 +175,7 @@ class MainFrame extends JFrame {
 
         return new Timer(animationDelay, animationListener);
     }
-    
+
 
     public void dispose() {
         if (coinsAnimationTimer != null) {
@@ -171,3 +184,4 @@ class MainFrame extends JFrame {
         super.dispose();
     }
 }
+
