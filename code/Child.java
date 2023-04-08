@@ -96,6 +96,15 @@ public class Child {
     public void removeReward(Reward reward) {
         rewards.remove(reward);
     }
+    public boolean hasReward(Reward reward) {
+        for (Reward r : rewards) {
+            if (r.getName().equals(reward.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void saveChildrentoCSV() {
         FileWriter fileWriter = null;
 
