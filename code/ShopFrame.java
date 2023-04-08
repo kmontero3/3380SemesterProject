@@ -31,6 +31,16 @@ class ShopFrame extends JFrame {
                 handlePurchase(child, reward);
             }
         };
+        
+        // ActionListener for sell buttons
+        ActionListener sellButtonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JButton button = (JButton) e.getSource();
+                Reward reward = (Reward) button.getClientProperty("reward");
+                handleSale(child, reward);
+            }
+        };
 
         // Create shop items
         Font itemFont = new Font("Comic Sans MS", Font.PLAIN, 18);
@@ -39,7 +49,8 @@ class ShopFrame extends JFrame {
         itemsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         for (Reward reward : Main.rewards) {
-            itemsPanel.add(createShopItem(itemFont, reward, "item1.png", itemButtonListener));
+            JPanel itemPanel = createShopItem(itemFont, reward, "item1.png", itemButtonListener, sellButtonListener, child);
+            itemsPanel.add(itemPanel);
         }
 
         JButton backButton = new JButton("Back");
@@ -72,7 +83,7 @@ class ShopFrame extends JFrame {
         setVisible(true);
     }
 
-    private JPanel createShopItem(Font itemFont, Reward reward, String itemImagePath, ActionListener itemButtonListener) {
+    private JPanel createShopItem(Font itemFont, Reward reward, String itemImagePath, ActionListener itemButtonListener, ActionListener sellButtonListener, Child child) {
         JPanel itemPanel = new JPanel(new BorderLayout(10, 10));
         itemPanel.setBackground(new Color(255, 255, 153));
         itemPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -85,11 +96,27 @@ class ShopFrame extends JFrame {
         itemButton.addActionListener(itemButtonListener);
         itemButton.putClientProperty("reward", reward);
 
-        itemPanel.add(itemButton, BorderLayout.CENTER);
+        boolean hasItem = child.hasReward(reward);
+
+        JButton sellButton = new JButton("Sell");
+        sellButton.setFont(itemFont);
+        sellButton.setBackground(new Color(255, 153, 102));
+        sellButton.setForeground(Color.WHITE);
+        sellButton.addActionListener(sellButtonListener);
+        sellButton.putClientProperty("reward", reward);
+        sellButton.setEnabled(hasItem);
+
+        JPanel buttonPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+        buttonPanel.setBackground(new Color(255, 255, 153));
+        buttonPanel.add(itemButton);
+        buttonPanel.add(sellButton);
+
+        itemPanel.add(buttonPanel, BorderLayout.CENTER);
         itemPanel.add(itemLabel, BorderLayout.SOUTH);
 
         return itemPanel;
     }
+
     private void handlePurchase(Child child, Reward reward) {
         if (child.getCoinsAvailable() >= reward.getCoinAmount()) {
             System.out.println(child.getName() + " has successfully purchased " + reward.getName() + "!");
@@ -97,10 +124,22 @@ class ShopFrame extends JFrame {
             System.out.println("They now have " + child.getCoinsAvailable() + " available coins.");
             JOptionPane.showMessageDialog(this, "You have successfully purchased " + reward.getName() + "!", "Purchase Successful", JOptionPane.INFORMATION_MESSAGE);
             coinsLabel.setText("Coins: " + child.getCoinsAvailable());
-            new MainFrame(child);
-            dispose();
         } else {
             JOptionPane.showMessageDialog(this, "You do not have enough coins to purchase " + reward.getName() + ".", "Not Enough Coins", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void handleSale(Child child, Reward reward) {
+        if (child.hasReward(reward)) {
+            int salePrice = reward.getCoinAmount() / 2;
+            System.out.println(child.getName() + " has successfully sold " + reward.getName() + " for " + salePrice + " coins.");
+            child.removeReward(reward);
+            child.updateCoins(child.getCoinsAvailable()+salePrice);
+            System.out.println("They now have " + child.getCoinsAvailable() + " available coins.");
+            JOptionPane.showMessageDialog(this, "You have successfully sold " + reward.getName() + " for " + salePrice + " coins!", "Sale Successful", JOptionPane.INFORMATION_MESSAGE);
+            coinsLabel.setText("Coins: " + child.getCoinsAvailable());
+        } else {
+            JOptionPane.showMessageDialog(this, "You do not have " + reward.getName() + " to sell.", "Item Not Found", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
