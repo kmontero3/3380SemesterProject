@@ -2,6 +2,8 @@ package code;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 class MainFrame extends JFrame {
@@ -71,7 +73,8 @@ class MainFrame extends JFrame {
         rewardsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "You have " + child.getRewards().size() + " rewards: " + child.getRewards().toString(), "Rewards", JOptionPane.INFORMATION_MESSAGE);
+            	dispose();
+                new RewardFrame(child);
             }
         });
 
@@ -183,5 +186,104 @@ class MainFrame extends JFrame {
         }
         super.dispose();
     }
+    
+    
+    class RewardFrame extends JFrame {
+        private Child child;
+        private JPanel rewardsListPanel;
+
+        public RewardFrame(Child child) {
+            super("Rewards");
+            this.child = child;
+
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.setBackground(new Color(255, 255, 153));
+
+            rewardsListPanel = new JPanel();
+            rewardsListPanel.setLayout(new BoxLayout(rewardsListPanel, BoxLayout.Y_AXIS));
+            rewardsListPanel.setBackground(new Color(255, 255, 153));
+            rewardsListPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+            updateRewardsList();
+
+            JScrollPane scrollPane = new JScrollPane(rewardsListPanel);
+            scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+            panel.add(scrollPane, BorderLayout.CENTER);
+
+            JButton backButton = new JButton("Back");
+            backButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+            backButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new MainFrame(child);
+                }
+            });
+
+            panel.add(backButton, BorderLayout.SOUTH);
+            add(panel);
+
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setSize(Toolkit.getDefaultToolkit().getScreenSize());
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            setLocationRelativeTo(null);
+            setVisible(true);
+        }
+
+        private void updateRewardsList() {
+            rewardsListPanel.removeAll();
+
+            ArrayList<Reward> rewards = child.getRewards();
+
+            if (rewards.size() > 0) {
+                for (Reward reward : rewards) {
+                    JPanel rewardPanel = createRewardPanel(reward);
+                    rewardsListPanel.add(rewardPanel);
+                    rewardsListPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+                }
+            } else {
+                JLabel noRewardsLabel = new JLabel("You have no rewards.");
+                noRewardsLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+                rewardsListPanel.add(noRewardsLabel);
+            }
+
+            rewardsListPanel.revalidate();
+            rewardsListPanel.repaint();
+        }
+
+        private JPanel createRewardPanel(Reward reward) {
+            JPanel rewardPanel = new JPanel();
+            rewardPanel.setLayout(new BoxLayout(rewardPanel, BoxLayout.X_AXIS));
+            rewardPanel.setBackground(new Color(255, 255, 153));
+            rewardPanel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.BLACK, 1),
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+
+            JLabel rewardLabel = new JLabel(reward.getName() + " - " + reward.getCoinAmount() + " coins");
+            rewardLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+
+            JButton redeemButton = new JButton("Redeem");
+            redeemButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+            redeemButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int confirm = JOptionPane.showConfirmDialog(RewardFrame.this, "Are you sure you want to redeem " + reward.getName() + "?", "Confirm Redemption", JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        child.removeReward(reward);
+                        JOptionPane.showMessageDialog(RewardFrame.this, "You have redeemed " + reward.getName() + "!", "Reward Redeemed", JOptionPane.INFORMATION_MESSAGE);
+                        updateRewardsList();
+                    }
+                }
+            });
+
+            rewardPanel.add(rewardLabel);
+            rewardPanel.add(Box.createHorizontalGlue());
+            rewardPanel.add(redeemButton);
+
+            return rewardPanel;
+        }
+    }
+
 }
 
