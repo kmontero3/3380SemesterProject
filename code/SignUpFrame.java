@@ -10,13 +10,15 @@ import java.lang.String;
 public class SignUpFrame extends JFrame {
     private JTextField usernameField;
     private JTextField passwordField;
-
-    public SignUpFrame(ArrayList<Parent> parents) {
+    private AppFactory appFactory;
+    
+    public SignUpFrame(ArrayList<Parent> parents, AppFactory appFactory) {
         super("Sign Up");
+        this.appFactory = appFactory;
         createComponents(parents);
         configureFrame();
     }
-
+    
     private void createComponents(ArrayList<Parent> parents) {
         // Create components
         JLabel usernameLabel = createLabel("Username:");
@@ -27,7 +29,7 @@ public class SignUpFrame extends JFrame {
 
         // Add action listener to sign up button
         signUpButton.addActionListener(e -> {
-            Parent newParent = new Parent(UUID.randomUUID(), usernameField.getText(), passwordField.getText());
+            Parent newParent = appFactory.createParent(UUID.randomUUID(), usernameField.getText(), passwordField.getText());
             parents.add(newParent);
 
             // Save new user's credentials
@@ -95,4 +97,3 @@ public class SignUpFrame extends JFrame {
         setVisible(true);
     }
 }
-
