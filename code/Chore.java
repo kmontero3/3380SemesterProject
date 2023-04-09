@@ -15,14 +15,13 @@ public class Chore {
     private boolean isComplete;
     private int recurrenceFrequency; // in days
 
-    private static final String CSV_FILE_PATH = "choredata.csv";
+    private static final String CSV_FILE_PATH = "childdata.csv";
     private static final String CSV_DELIMITER = ",";
     private static final String NEW_LINE_SEPARATOR = "\n";
     private static final String CSV_HEADER = "ID,Name,RewardAmount,Completed,RecurrenceFrequency\n";
 
     
     public Chore(UUID id, String chore_name, int rewardAmount, boolean completed, int recurrenceFrequency) {
-    	this.id = id;
         this.chore_name = chore_name;
         this.rewardAmount = rewardAmount;
         this.isComplete = false;
@@ -74,13 +73,13 @@ public class Chore {
                 file.createNewFile();
                 fileWriter = new FileWriter(CSV_FILE_PATH);
                 fileWriter.append(CSV_HEADER);
+                fileWriter.append(NEW_LINE_SEPARATOR);
             } else {
                 // If file exists, append to it
-            	fileWriter = new FileWriter(CSV_FILE_PATH, false);
-            	fileWriter.append(CSV_HEADER);
+                fileWriter = new FileWriter(CSV_FILE_PATH, true);
             }
             for (Chore chore : Main.chores) {
-                fileWriter.append(chore.id.toString());
+                fileWriter.append(chore.getId().toString());
                 fileWriter.append(CSV_DELIMITER);
                 fileWriter.append(chore.getName());
                 fileWriter.append(CSV_DELIMITER);
@@ -95,45 +94,44 @@ public class Chore {
             System.out.println("Error while saving chores to CSV file: " + e.getMessage());
         } finally {
             try {
+                if (fileWriter != null) {
                     fileWriter.flush();
                     fileWriter.close();
-             
+                }
             } catch (IOException e) {
                 System.out.println("Error while closing fileWriter: " + e.getMessage());
             }
         }
     }
 
-    public UUID getId() {
+    private Object getId() {
         return id;
     }
 
 
     // Load chores from CSV file
     public static void loadChoresFromCSV() {
+        Main.chores = new ArrayList<>();
+        BufferedReader reader = null;
         try {
             File file = new File(CSV_FILE_PATH);
             if (!file.exists()) {
                 System.out.println("Chores CSV file does not exist");
-                saveChoresToCSV();
+                return;
             }
-            Main.chores = new ArrayList<>();
-            BufferedReader reader = new BufferedReader(new FileReader(CSV_FILE_PATH));
+            reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine(); // skip header
             while ((line = reader.readLine()) != null) {
-            	String[] fields = line.split(CSV_DELIMITER);
+                String[] fields = line.split(",");
                 UUID id = UUID.fromString(fields[0]);
                 String name = fields[1];
                 int rewardAmount = Integer.parseInt(fields[2]);
                 boolean isComplete = Boolean.parseBoolean(fields[3]);
                 int recurrenceFrequency = Integer.parseInt(fields[4]);
                 Chore chore = new Chore(id, name, rewardAmount, isComplete, recurrenceFrequency);
-                System.out.println("chore chore id-" + chore.id.toString() + "----" + id.toString() + "---" + chore.getName() );
-                
                 Main.chores.add(chore);
-              
+                
             }
-            reader.close();
         } catch (IOException e) {
             System.out.println("Error while loading chores from CSV file: " + e.getMessage());
         } catch (NumberFormatException e) {
@@ -141,4 +139,3 @@ public class Chore {
         }
 }
 }
-

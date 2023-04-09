@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.UUID;
+import code.Main;
 import java.util.ArrayList;
 
 public class ParentSettingsFrame extends JFrame {
@@ -18,9 +19,6 @@ public class ParentSettingsFrame extends JFrame {
 
     public ParentSettingsFrame(Parent parent) {
         super("Parent Settings");
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            Main.saveCSVData();
-        }));
         // Create components
         JLabel titleLabel = new JLabel("Parent Settings");
         titleLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
@@ -101,6 +99,7 @@ public class ParentSettingsFrame extends JFrame {
                 break;
 
             case "Select Account":
+                //Main.saveCSVData();
                 dispose();
                 System.out.println("Select a child Account!");
                 SelectAccountFrame selectAccountFrame = new SelectAccountFrame(parent);
