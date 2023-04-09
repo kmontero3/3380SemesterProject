@@ -151,7 +151,7 @@ class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new ShopFrame(child);
+                new ShopFrame(child, new ConcreteAppFactory());
             }
         });
 
