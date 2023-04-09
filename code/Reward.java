@@ -10,10 +10,10 @@ public class Reward {
     private int coinAmount;
 
     // CSV constants
-    /*private static final String CSV_HEADER = "ID,Name,Coin Amount";
+    private static final String CSV_HEADER = "ID,Name,Coin Amount";
     private static final String CSV_FILE_PATH = "rewarddata.csv";
     private static final String CSV_DELIMITER = ",";
-    private static final String NEW_LINE_SEPARATOR = "\n";*/
+    private static final String NEW_LINE_SEPARATOR = "\n";
 
     public Reward(UUID id, String name, int coinAmount) {
         this.id = id;
@@ -41,7 +41,7 @@ public class Reward {
         this.coinAmount = coinAmount;
     }
 
-    /*public static void saveRewardsToCSV() {
+    public static void saveRewardsToCSV() {
         FileWriter fileWriter = null;
 
         try {
@@ -56,11 +56,10 @@ public class Reward {
                 fileWriter.append(NEW_LINE_SEPARATOR);
             } else {
                 // If file exists, append to it
-                fileWriter = new FileWriter(CSV_FILE_PATH, true);
+            	fileWriter = new FileWriter(CSV_FILE_PATH, false);
+            	fileWriter.append(CSV_HEADER);
+            	fileWriter.append(NEW_LINE_SEPARATOR);
             }
-        // Write CSV header
-        fileWriter.append(CSV_HEADER);
-        fileWriter.append("\n");
 
         for (Reward reward : Main.rewards) {
 
@@ -75,22 +74,27 @@ public class Reward {
         } catch (IOException e) {
             System.out.println("Error while loading parents from CSV file: " + e);
         } finally {
-        fileWriter.flush();
-        fileWriter.close();
+        	
+        try {
+			fileWriter.flush();
+			 fileWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+       
         }
-    }*/
+    }
 
-   /* public static void loadRewardsFromCSV() {
-        BufferedReader reader = null;
+    public static void loadRewardsFromCSV() {
         try{
         
         File file = new File(CSV_FILE_PATH);
             if (!file.exists()) {
                 System.out.println("Chores CSV file does not exist");
-                return;
+                saveRewardsToCSV();
             }
         Main.rewards = new ArrayList<>();
-        reader = new BufferedReader(new FileReader(CSV_FILE_PATH));
+        BufferedReader reader = new BufferedReader(new FileReader(CSV_FILE_PATH));
 
         // Skip CSV header
         String line = reader.readLine();
@@ -105,16 +109,12 @@ public class Reward {
             Reward reward = new Reward(id, name, coinAmount);
             Main.rewards.add(reward);
         }
+        reader.close();
         }
         catch (IOException e) {
         System.out.println("Error while loading CSV file: " + e);
     } 
     finally{
-        try {
-                reader.close();
-            } catch (IOException e) {
-                System.out.println("Error while closing reader: " + e);
-            }
     }
-    }*/
+    }
 }

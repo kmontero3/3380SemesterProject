@@ -42,30 +42,24 @@ public class LoginFrame extends JFrame {
 
         System.out.println("Log in:");
        
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        double scaleFactor = screenSize.getWidth() / 1920.0;
         // Create components
         JLabel usernameLabel = new JLabel("Username:");
+        usernameField = new JTextField(20);
 
         JLabel passwordLabel = new JLabel("Password:");
-
-        usernameField = new JTextField((int) (20 * scaleFactor));
-        passwordField = new JPasswordField((int) (20 * scaleFactor));
+        passwordField = new JPasswordField(20);
 
         JButton loginButton = new JButton("Login");
 
         // Customize components
-
-        int playfulFontSize = (int) (14 * scaleFactor);
-        Font playfulFont = new Font("Comic Sans MS", Font.PLAIN, playfulFontSize);
+        Font playfulFont = new Font("Comic Sans MS", Font.PLAIN, 14);
         usernameLabel.setFont(playfulFont);
         passwordLabel.setFont(playfulFont);
         loginButton.setFont(playfulFont);
         loginButton.setBackground(new Color(255, 153, 102));
         loginButton.setForeground(Color.WHITE);
-        Dimension buttonSize = new Dimension((int) (100 * scaleFactor), (int) (30 * scaleFactor));
-        loginButton.setPreferredSize(buttonSize);
+
         // Layout components using GridBagLayout
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(new Color(255, 255, 153));
@@ -147,12 +141,7 @@ public class LoginFrame extends JFrame {
 
         // Set frame properties
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Set frame size to screen size
-        setSize(screenSize);
-
-        // Set maximum frame size to screen size
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }

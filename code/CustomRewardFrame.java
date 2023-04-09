@@ -40,7 +40,7 @@ public class CustomRewardFrame extends JFrame {
                 }
                 Reward customReward = new Reward(UUID.randomUUID(), rewardTitle, coinAmount);
                 Main.rewards.add(customReward);
-                //Reward.saveRewardsToCSV();
+                Reward.saveRewardsToCSV();
                 JOptionPane.showMessageDialog(CustomRewardFrame.this, "Custom reward created!");
                 dispose();
             }
@@ -97,3 +97,4 @@ public class CustomRewardFrame extends JFrame {
         setVisible(true);
     }
 }
+

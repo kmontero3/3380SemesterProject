@@ -1,5 +1,6 @@
 package code;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +12,6 @@ import java.util.Set;
 class ChoresFrame extends JFrame {
     public ChoresFrame(Child child) {
         super("Chores");
-
         // Create components
         Font playfulFont = new Font("Comic Sans MS", Font.PLAIN, 14);
         JLabel label = new JLabel("Chores List:");
