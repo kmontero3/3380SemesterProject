@@ -250,7 +250,7 @@ public class Child {
 			reader.close();
 		} catch (IOException e) {
 			System.out.println("Error while loading CSV file: " + e);
-		} finally {
+		} finally {}
 		}
 		
 			private static Parent findParentById(UUID id) {
