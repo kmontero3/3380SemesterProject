@@ -19,6 +19,11 @@ public class ParentSettingsFrame extends JFrame {
 
     public ParentSettingsFrame(Parent parent) {
         super("Parent Settings");
+        
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Main.saveCSVData();
+        }));
+        
         // Create components
         JLabel titleLabel = new JLabel("Parent Settings");
         titleLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
