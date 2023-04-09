@@ -50,20 +50,12 @@ public class Parent {
                 file.createNewFile();
                 fileWriter = new FileWriter(CSV_FILE_PATH);
                 fileWriter.append(CSV_HEADER);
-                fileWriter.append(NEW_LINE_SEPARATOR);
 
             } else {
                 // If file exists, append to it
-                fileWriter = new FileWriter(CSV_FILE_PATH, true);
+                fileWriter = new FileWriter(CSV_FILE_PATH, false);
+                fileWriter.append(CSV_HEADER);
             }
-
-            // write header row
-            fileWriter.append("ID");
-            fileWriter.append(CSV_DELIMITER);
-            fileWriter.append("Name");
-            fileWriter.append(CSV_DELIMITER);
-            fileWriter.append("Password");
-            fileWriter.append("\n");
 
             // write data rows
             for (Parent parent : Main.parents) {
@@ -82,30 +74,26 @@ public class Parent {
 
         } finally {
 
-            try {
-                fileWriter.flush();
-                fileWriter.close();
-
-            } catch (IOException e) {
-
-                System.out.println("Error while flushing/closing fileWriter: " + e);
-            }
+        	try {
+    			fileWriter.flush();
+    			 fileWriter.close();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
         }
     }
 
     // Load parents from CSV file
     public static void loadParentsFromCSV() {
 
-        BufferedReader reader = null;
-
         try {
             File file = new File(CSV_FILE_PATH);
             if (!file.exists()) {
                 System.out.println("Chores CSV file does not exist");
-                return;
+                saveParentsToCSV();
             }
 
-            reader = new BufferedReader(new FileReader(CSV_FILE_PATH));
+            BufferedReader reader = new BufferedReader(new FileReader(CSV_FILE_PATH));
             Main.parents = new ArrayList<Parent>();
             String line = reader.readLine(); // skip the header line
             while ((line = reader.readLine()) != null) {
@@ -116,23 +104,18 @@ public class Parent {
                 Parent parent = new Parent(id, name, password);
                 // add the parent to the Main.parents list
                 Main.parents.add(parent);
+                
 
             }
 
             System.out.println("Parents loaded from CSV file successfully!");
+            reader.close();
 
         } catch (IOException e) {
 
             System.out.println("Error while loading parents from CSV file: " + e);
 
         } finally {
-
-            try {
-                reader.close();
-                
-            } catch (IOException e) {
-                System.out.println("Error while closing reader: " + e);
-            }
 
         }
     }

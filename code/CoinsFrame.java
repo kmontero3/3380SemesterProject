@@ -1,11 +1,12 @@
 package code;
+// package code;
 
 // import java.io.*;
-import javax.swing.*;
+// import javax.swing.*;
 // import java.awt.*;
 // import java.awt.event.*;
 
-	class CoinsFrame extends JFrame {
+// class CoinsFrame extends JFrame {
 //     private int currentImageIndex = 0;
 //     private JLabel coinImage;
 
@@ -94,4 +95,4 @@ import javax.swing.*;
 
 //         timer.start();
 //     }
- }
+// }

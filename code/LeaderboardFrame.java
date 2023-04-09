@@ -1,6 +1,7 @@
 package code;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,3 +55,4 @@ public class LeaderboardFrame extends JFrame {
         setVisible(true);
     }
 }
+

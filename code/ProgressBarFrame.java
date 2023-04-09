@@ -1,10 +1,11 @@
- package code;
+package code;
+// package code;
 
 // import java.awt.*;
- import javax.swing.*;
+// import javax.swing.*;
 // import java.awt.event.*;
 
- public class ProgressBarFrame extends JFrame{
+// public class ProgressBarFrame extends JFrame{
 //    // create a frame
 //     static JFrame f;
  
@@ -36,4 +37,6 @@
  
 //         pack();
 //         setVisible(true);
-     }
+//     }
+ 
+
