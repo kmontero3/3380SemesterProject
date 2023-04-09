@@ -6,10 +6,13 @@ import java.awt.event.*;
 
 class ShopFrame extends JFrame {
     private JLabel coinsLabel;
-
-    public ShopFrame(Child child) {
+    private AppFactory appFactory;
+    
+    public ShopFrame(Child child, AppFactory appFactory) {
         super("Shop");
-
+     
+        this.appFactory = appFactory;
+        
         coinsLabel = createCoinsLabel(child);
         JPanel headerPanel = createHeaderPanel(coinsLabel);
         ActionListener itemButtonListener = e -> handlePurchase(child, (Reward) ((JButton) e.getSource()).getClientProperty("reward"));
@@ -114,7 +117,8 @@ class ShopFrame extends JFrame {
     private void handlePurchase(Child child, Reward reward) {
         if (child.getCoinsAvailable() >= reward.getCoinAmount()) {
             System.out.println(child.getName() + " has successfully purchased " + reward.getName() + "!");
-            child.addReward(child, reward);
+            Reward newReward = appFactory.createReward(reward.getId(), reward.getName(), reward.getCoinAmount());
+            child.addReward(child, newReward);
             System.out.println("They now have " + child.getCoinsAvailable() + " available coins.");
             JOptionPane.showMessageDialog(this, "You have successfully purchased " + reward.getName() + "!", "Purchase Successful", JOptionPane.INFORMATION_MESSAGE);
             coinsLabel.setText("Coins: " + child.getCoinsAvailable());
@@ -145,7 +149,6 @@ class ShopFrame extends JFrame {
         setVisible(true);
     }
 }
-
 
     
     
