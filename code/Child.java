@@ -252,4 +252,13 @@ public class Child {
 			System.out.println("Error while loading CSV file: " + e);
 		} finally {
 		}
+		
+			private static Parent findParentById(UUID id) {
+		for (Parent parent : Main.parents) {
+			if (parent.getId().equals(id)) {
+				return parent;
+			}
+		}
+		return null; // parent not found
+	}
 	}
