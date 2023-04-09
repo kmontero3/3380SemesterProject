@@ -109,7 +109,7 @@ public class LoginFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Sign up: ");
-                SignUpFrame signUpFrame = new SignUpFrame(parents);
+                SignUpFrame signUpFrame = new SignUpFrame(parents, new ConcreteAppFactory());
             }
         });
 
@@ -161,4 +161,3 @@ public class LoginFrame extends JFrame {
         new LoginFrame();
     }*/
 }
-
