@@ -97,3 +97,4 @@ public class SignUpFrame extends JFrame {
         setVisible(true);
     }
 }
+

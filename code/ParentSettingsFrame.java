@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.UUID;
+import code.Main;
 import java.util.ArrayList;
-
 
 public class ParentSettingsFrame extends JFrame {
     private String[] settingsOptions = {
@@ -16,11 +16,15 @@ public class ParentSettingsFrame extends JFrame {
             "Select Account",
             "Log out"
     };
-    
-    private ConcreteAppFactory appFactory;
+
+    private AppFactory appFactory;
     
     public ParentSettingsFrame(Parent parent) {
         super("Parent Settings");
+        
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Main.saveCSVData();
+        }));
         
         appFactory = new ConcreteAppFactory();
         // Create components
@@ -81,7 +85,6 @@ public class ParentSettingsFrame extends JFrame {
             case "Assign a chore":
                 System.out.println("Assigning a chore...");
                 assignChore(parent);
-                // Assign a chore logic here
                 break;
                 
             case "Set custom rewards":

@@ -73,6 +73,24 @@ public class Main {
         }
         return null; // chore not found
     }
+    
+    public static Chore getChoreByID(UUID choreID, ArrayList<Chore> chores2) {
+		for (Chore chore : chores2) {
+			if (chore.getId().equals(choreID)) {
+				return chore;
+			}
+		}
+		return null; // chore not found
+	}
+
+	public static Reward getRewardByID(UUID rewardID, ArrayList<Reward> rewards) {
+		for (Reward reward : rewards) {
+			if (reward.getId().equals(rewardID)) {
+				return reward;
+			}
+		}
+		return null;
+	}
 
     public static Reward getRewardByName(String rewardName, ArrayList<Reward> rewards) {
         for (Reward reward : rewards) {
@@ -130,7 +148,7 @@ public class Main {
         // connection = DriverManager.getConnection(URL, USER, PASSWORD);
         // statement = connection.createStatement();
 
-
+        loadCSVData();
 
         // upload example children and parents
         final int MAX_CHILDREN = 3;
@@ -436,16 +454,19 @@ public class Main {
             }
         }
     }
-  /*  public static void loadCSVData(){
-        Child.loadChildrenFromCSV();
-        Chore.loadChoresFromCSV();
-        Parent.loadParentsFromCSV();
-        Reward.loadRewardsFromCSV();
-    }
-    public static void saveCSVData(){
-        Child.saveChildrentoCSV();
-        Chore.saveChoresToCSV();
-        Parent.saveParentsToCSV();
-        Reward.saveRewardsToCSV();
-    }*/
+  public static void loadCSVData() {
+
+		Chore.loadChoresFromCSV();
+		Parent.loadParentsFromCSV();
+		Reward.loadRewardsFromCSV();
+		Child.loadChildrenFromCSV();
+	}
+
+	public static void saveCSVData() {
+		Child.saveChildrentoCSV();
+		Chore.saveChoresToCSV();
+		Parent.saveParentsToCSV();
+		Reward.saveRewardsToCSV();
+		System.out.println("all data saved to CSV's");
+	}
 }
