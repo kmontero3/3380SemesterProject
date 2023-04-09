@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.UUID;
-import code.Main;
 import java.util.ArrayList;
+
 
 public class ParentSettingsFrame extends JFrame {
     private String[] settingsOptions = {
@@ -16,9 +16,13 @@ public class ParentSettingsFrame extends JFrame {
             "Select Account",
             "Log out"
     };
-
+    
+    private ConcreteAppFactory appFactory;
+    
     public ParentSettingsFrame(Parent parent) {
         super("Parent Settings");
+        
+        appFactory = new ConcreteAppFactory();
         // Create components
         JLabel titleLabel = new JLabel("Parent Settings");
         titleLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
@@ -132,7 +136,7 @@ public class ParentSettingsFrame extends JFrame {
         // Here, you can create the new child profile using the childName variable
         // For example, if you have a class representing a child, you can instantiate
         // it:
-        Child child = new Child(UUID.randomUUID(), childName, 0, parent, new ArrayList<Reward>(), new ArrayList<Chore>());
+        Child child = appFactory.createChild(UUID.randomUUID(), childName, 0, parent, new ArrayList<Reward>(), new ArrayList<Chore>());
         Main.children.add(child);
         Child.saveChildrentoCSV();
         // Then you may add this child to a data structure, for example:
