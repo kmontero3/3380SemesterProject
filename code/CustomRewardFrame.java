@@ -7,10 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.UUID;
 
 public class CustomRewardFrame extends JFrame {
+	private AppFactory appFactory;
 
-    public CustomRewardFrame(Parent parent) {
+    public CustomRewardFrame(Parent parent, AppFactory appFactory) {
         super("Create Custom Reward");
-
+        this.appFactory = appFactory;
         // Create components
         Font headerFont = new Font("Comic Sans MS", Font.BOLD, 24);
         JLabel headerLabel = new JLabel("Create Custom Reward");
@@ -38,7 +39,7 @@ public class CustomRewardFrame extends JFrame {
                     JOptionPane.showMessageDialog(CustomRewardFrame.this, "Please enter a reward title.");
                     return;
                 }
-                Reward customReward = new Reward(UUID.randomUUID(), rewardTitle, coinAmount);
+                Reward customReward = appFactory.createReward(UUID.randomUUID(), rewardTitle, coinAmount);
                 Main.rewards.add(customReward);
                 Reward.saveRewardsToCSV();
                 JOptionPane.showMessageDialog(CustomRewardFrame.this, "Custom reward created!");
