@@ -44,6 +44,20 @@ public class LeaderboardFrame extends JFrame {
             rank++;
         }
 
+        // Create a separate panel for the back button
+        JPanel backButtonPanel = new JPanel();
+        backButtonPanel.setLayout(new BoxLayout(backButtonPanel, BoxLayout.X_AXIS));
+        backButtonPanel.setBackground(new Color(248, 200, 255));
+        backButtonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+
+        // Add the back button to the panel
+        JButton backButton = createBackButton(parent);
+        backButtonPanel.add(backButton);
+        backButtonPanel.add(Box.createHorizontalGlue());
+
+        // Add the back button panel to the main panel
+        panel.add(backButtonPanel);
+
         // Add panel to frame
         add(panel);
 
@@ -52,5 +66,19 @@ public class LeaderboardFrame extends JFrame {
         setSize(Toolkit.getDefaultToolkit().getScreenSize());
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private JButton createBackButton(Parent parent) {
+        Font playfulFont = new Font("Comic Sans MS", Font.BOLD, 24);
+        JButton backButton = new JButton("Back");
+        backButton.setFont(playfulFont);
+        backButton.setBackground(new Color(255, 153, 102));
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(e -> {
+            // Replace this with the appropriate method to show the previous frame
+            // For example: parent.showParentFrame();
+            dispose();
+        });
+        return backButton;
     }
 }
