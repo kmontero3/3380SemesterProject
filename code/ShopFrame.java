@@ -88,8 +88,12 @@ class ShopFrame extends JFrame {
 
         JLabel itemLabel = new JLabel(reward.getName() + " - " + reward.getCoinAmount() + "coins");
         itemLabel.setFont(itemFont);
-        ImageIcon itemIcon = new ImageIcon(itemImagePath); // Replace with actual image path
-        JButton itemButton = new JButton(itemIcon);
+
+        // Modify the itemButton initialization
+        JButton itemButton = new JButton("Buy");
+        itemButton.setFont(itemFont);
+        itemButton.setBackground(Color.BLUE);
+        itemButton.setForeground(Color.WHITE);
         itemButton.addActionListener(itemButtonListener);
         itemButton.putClientProperty("reward", reward);
 
@@ -149,8 +153,3 @@ class ShopFrame extends JFrame {
         setVisible(true);
     }
 }
-
-
-    
-    
-
