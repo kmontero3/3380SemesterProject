@@ -7,9 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.UUID;
 
 public class CustomChoreFrame extends JFrame {
+	private AppFactory appFactory;
 
-    public CustomChoreFrame() {
+    public CustomChoreFrame(AppFactory appFactory) {
         super("Create Custom Chore");
+        this.appFactory = appFactory;
         setAlwaysOnTop(true);
         System.out.println("Creating a custom chore...");
 
@@ -46,7 +48,7 @@ public class CustomChoreFrame extends JFrame {
                     return;
                 }
 
-                Chore customChore = new Chore(UUID.randomUUID(), choreTitle, earnedCoins, false, 1);
+                Chore customChore = appFactory.createChore(UUID.randomUUID(), choreTitle, earnedCoins, false, 1);
                 Main.chores.add(customChore);
                 Chore.saveChoresToCSV();
                 JOptionPane.showMessageDialog(CustomChoreFrame.this, "Custom chore created!");
